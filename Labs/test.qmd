@@ -1,0 +1,18 @@
+---
+title: "HELP!"
+author: "Confused professor"
+format: html
+editor: visual
+---
+
+# The problem
+
+I want code that will create two variables and plot them side by side, but it's just not working. Help!
+
+```{r}
+X = rnorm(100)
+
+y = .30*x + rnorm(0, 100, 1)
+
+plot(x ~ y).
+```

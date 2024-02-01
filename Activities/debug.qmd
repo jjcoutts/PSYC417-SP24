@@ -1,0 +1,38 @@
+---
+title: "BUGS_BUGS_BUGS"
+author: "HELP!"
+format: html
+editor: visual
+---
+
+## War on bugs
+
+From: confused_professor
+
+To: programming_expert
+
+Please help me with the below code. I need to submit this paper ASAP but I'm just starting to learn R and don't know exactly what to do. I appreciate it.
+
+Best,\
+CP
+
+```{r}
+bool = true
+priNt(bool)
+```
+
+```{r}
+bool*45LL
+
+trueish = Log(45) == log(45)
+```
+
+```{r}
+Nums1 = seq(trueish:5).
+
+Nums2<-SEQ(5:truefish)
+```
+
+```{r}
+plot(X;y)
+```

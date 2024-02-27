@@ -1,0 +1,216 @@
+---
+title: "Lecture 5: Functions Workbook"
+author: "PSYC417"
+format: html
+editor: visual
+---
+
+## Functions
+
+Functions have a similar structure to conditionals and loops. You initiate with the command *function*, specify 'arugments' that modify the function output in parentheses, and contain the body of code within curly braces. You should name a function, as functions are objects in R. You also need to return an object at the end of R code.
+
+Function are great for a number of reasons. They:
+
+1)  We can separate code by breaking long tasks into small steps.
+
+2)  Readability: We can call a function many times without having to copy and paste large chunks of code. (Imagine if you had to run the maximum code you create every time you wanted to find the maximum.)
+
+3)  Reliability: By not having to re-write the function content multiple times, we avoid bugs/typos/mistakes.
+
+4)  Abstraction: Functions help keep essential information in the main coding file, while removing details contained in the body of functions.
+
+An example of a function is below:
+
+```{r}
+make_numeric<- function(x){
+  num_x <- as.numeric(x)
+  return(num_x)
+}
+bad_num <- c("1","2","3")
+
+good_num <- make_numeric(bad_num)
+
+bad_num; good_num
+```
+
+Let's covert our max code from last time into a function. Call the function **my_max**.
+
+```{r}
+
+  data <- c(10,40,3,12,18)
+  cmax <- -Inf 
+  for (i in 1:length(data)) {
+	  if (data[i] > cmax) {
+	    cmax = data[i]
+    }
+  }
+
+```
+
+Now test it with a bunch of different vectors you create!
+
+```{r}
+
+```
+
+**Availability of Variables**
+
+-   Functions run locally. That means that variables defined in functions are only available while the funciton is running. This is a good thing. Imagine if your object kept getting overwritten because you used a function that had an object with the same name as yours.
+
+-   For example, the variables data (automatically assigned to the input) and cmax only exist while the mymax() function is running.
+
+-   These values are assigned from scratch each time the function is called.
+
+```{r}
+demonstrate <- function(x){
+  new_data <- x*2
+  return(x*2)
+}
+demonstrate(5);print(new_data)
+```
+
+## Multiple Arguments
+
+You can add multiple arguments that further customize the function to your or the user's needs.
+
+```{r}
+vmax2 <- function(data, n){
+   temp_max <- -Inf
+   for(i in 1:n){
+      if(temp_max < data[i]){
+         temp_max = data[i]
+      } # end if statement
+   }# end for loop
+   return(temp_max)
+} # end function
+
+vmax2(c(1:10)) # generates error
+vmaxw(c(1:10), n =10) # works
+```
+
+When you have multiple arguments, you can set a default value that will run unless the user specifies something else.
+
+```{r}
+vmax2 <- function(data, n=length(data)){
+   temp_max <- -Inf
+   for(i in 1:n){
+      if(temp_max < data[i]){
+         temp_max = data[i]
+      } # end if statement
+   }# end for loop
+   return(temp_max)
+} # end function
+
+vmax2(c(1:10)) # now works because it automatically defaults to the length of the vector
+```
+
+Just make sure you're designing functions to fit the objects you want to work with. These functions will not work on data frames as they currently are. R reads arguments by position, so if you don't address each argument by name, you better know the order the arguments are in.
+
+It is usually wise-especially when creating functions that others use-to build in safeguards that prevent a function from running when an argument is misspecified. R's messages aren't always helpful.
+
+-   Conditionals can help us with this. We can make sure code only runs if our arguments are appropriately used (e.g., people enter a vector for vmax() and not something else).
+
+-   You can use the stop("Custom error text") command to terminate a function and produce an error message saying whatever you want.
+
+```{r}
+vmax3 <- function(data, n=length(data)){
+   if(class(data)=="numeric" | class(data)=="integer"){
+      temp_max <- -Inf
+      for(i in 1:n){
+         if(temp_max < data[i]){
+            temp_max = data[i]
+         } # end if statement
+      } # end loop
+      return(temp_max)
+   }else{ 
+      stop("Data must be numeric or integer")
+   } # end conditional
+} # end function
+
+vmax3(c("1","2","3"))
+```
+
+## Exercises
+
+1.) Build a function similiar to vmax for minimums now. Give it at least two arguments (the second is up to you, it can be n or something else you think of).
+
+```{r}
+```
+
+2.) Create a function called "countdown" that counts down (i.e., prints numbers) from some value, n, to another value, stop. Make the default value of stop 0.
+
+```{r}
+
+```
+
+## Some examples of functions in base R 
+
+We can expand our access to functions by downloading packages, but sometimes what we need isn't covered in either case. Thankfully, we can now build our own.
+
+### mean, median, minimum, maximum, range and sum
+
+```{r}
+v <- c(40,18,60)
+mean(v)
+median(v)
+min(v)
+max(v)
+range(v)
+sum(v)
+prod(v)
+```
+
+The efficacy of those functions depends on the data type and structure, so become familiar with how those work.
+
+### sort() to arrange a vector in ascending or descending order
+
+Similar to the "arrange" pipe in dplyr
+
+```{r}
+v <- c(18,75,20,33,4,56,12)
+#the default will sort in ascending order
+sort(v)
+#to sort in descending order, you have to specify "decreasing=TRUE" as an argument
+sort(v, decreasing=TRUE)
+```
+
+With character vectors, it will sort in alphabetical order, given that this usually the order of the collating sequence.
+
+```{r}
+s <- c("e","r","a","g","v","d")
+sort(s)
+
+#the decreasing argument also works with characters
+sort(s, decreasing=TRUE)
+```
+
+It also works when combining characters and numbers but it will convert the numbers into string and do weird things with those given the collating sequence (remember "10" \< "2" when specified as a string).
+
+```{r}
+sort(c(s,v))
+```
+
+### nchar() to count the number of character in a character object
+
+```{r}
+#in a word/single string
+nchar("banana")
+```
+
+```{r}
+#in a vector
+nchar(s)
+```
+
+### exists() to check if a variable is defined in your environment
+
+Careful, you have to specify the variable name as a character string for the input.
+
+```{r}
+exists("v")
+exists("s")
+exists("vmax3")
+exists(vmax2) #this won't work even though v exisits
+```
+
+That's it! Great job! :)
